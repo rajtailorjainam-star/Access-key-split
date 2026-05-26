@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #result {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" id="accessKey" style="width: 450px;padding: 8px;border: 1px solid #ccc;border-radius: 6px;" placeholder="Enter 48-digit access key" />
+    <button onclick="splitAccessKey()" style="padding: 6px;">Split Access Key</button>
+    <p id="result"></p>
+    <script>
+        function splitAccessKey() {
+            const accessKey = document.getElementById("accessKey").value;
+            const cleanKey = accessKey.replace(/\s+/g, "");
+
+            // Validate length
+            if (cleanKey.length !== 48) {
+                throw new Error("Access key must be exactly 48 digits");
+            }
+
+            // First 16 digits = IV
+            const iv = cleanKey.slice(0, 16);
+
+            // Remaining 32 digits = Secret Key
+            const secretKey = cleanKey.slice(16);
+            document.getElementById("result").innerText = `IV: ${iv}\nSecret Key: ${secretKey}`;
+            return {
+                iv,
+                secretKey,
+            };
+        }
+    </script>
+</body>
+
+</html>
